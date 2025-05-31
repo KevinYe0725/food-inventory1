@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>基础图表</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart" width="400" height="200"></canvas>
+
+  <script>
+    // 数据准备
+    const data = {
+      labels: ['1日', '2日', '3日', '4日', '5日'],
+      datasets: [{
+        label: '销售量',
+        data: [65, 59, 80, 81, 56],
+        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+      }]
+    };
+
+    // 创建图表
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+      type: 'bar', // 柱状图
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

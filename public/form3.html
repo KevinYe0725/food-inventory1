@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2>本月top3商家</h2>
+        <canvas id="comboChart" width="800" height="400"></canvas>
+    </div>
+
+    <script>
+        
+        const marketList = [
+            { marketName: '商家A', totalSales: 50000 },
+            { marketName: '商家B', totalSales: 43000 },
+            { marketName: '商家C', totalSales: 15000 },
+        ];
+
+        
+        const totalSum = marketList.reduce((sum, item) => sum + item.totalSales, 0);
+
+        
+        const salesDataWithRate = marketList.map(item => ({
+            ...item,
+            salesRate: item.totalSales / totalSum
+        }));
+
+        
+        const labels = salesDataWithRate.map(item => item.marketName);
+        const salesValues = salesDataWithRate.map(item => item.totalSales);
+        const rateValues = salesDataWithRate.map(item => item.salesRate);
+
+        
+        const ctx = document.getElementById('comboChart');
+        new Chart(ctx, {
+            type: 'bar', 
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        type: 'bar', 
+                        label: '销售额',
+                        data: salesValues,
+                        backgroundColor: 'rgba(65, 105, 225, 0.8)', // 深蓝色
+                        borderColor: 'rgba(65, 105, 225, 1)',      // 深蓝色边框
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'line', 
+                        label: '销售占比',
+                        data: rateValues,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.datasetIndex === 0) {
+                                    label += context.parsed.y + '元';
+                                } else {
+                                    label += (context.parsed.y * 100).toFixed(1) + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    },
+                    
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '销售额(元)'
+                        },
+                        beginAtZero: true,
+                        max: Math.max(...salesValues) * 1.5,
+            
+                        ticks: {
+                        
+                        stepSize: Math.ceil(Math.max(...salesValues) * 1.5 / 5),
+                        callback: function(value) {
+                        return value + '元';
+                }
+            },
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '销售占比(%)'
+                        },
+                        min: 0,
+                        max: 1,
+                        ticks: {
+                            callback: function(value) {
+                                return (value * 100) + '%';
+                            }
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f8fa;
+        }
+        .chart-container {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .chart-legend {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>总体数据查看</h1>
+    <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+    </div>
+
+    <script>
+        // 数据准备
+        const monthDataList = [
+            { mounth: '1月', totalSales: 125800 },
+            { mounth: '2月', totalSales: 98250 },
+            { mounth: '3月', totalSales: 156300 }
+        ];
+
+        
+        const months = monthDataList.map(item => item.mounth);
+        const sales = monthDataList.map(item => item.totalSales);
+
+        // 获取Canvas元素
+        const ctx = document.getElementById('salesChart').getContext('2d');
+
+        // 创建渐变色
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(65, 105, 225, 0.4)');
+        gradient.addColorStop(1, 'rgba(65, 105, 225, 0.1)');
+
+        // 创建折线图
+        const salesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: '销售额',
+                    data: sales,
+                    backgroundColor: gradient,
+                    borderColor: 'rgba(65, 105, 225, 1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: 'rgba(65, 105, 225, 0.8)',
+                    pointBorderColor: '#fff',
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    pointHitRadius: 20,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    tooltip: {
+                        mode: 'nearest',
+                        intersect: false,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 14
+                        },
+                        callbacks: {
+                            label: function(context) {
+                                return `销售额: ${context.parsed.y.toLocaleString('zh-CN')} 元`;
+                            },
+                            title: function(context) {
+                                return context[0].label;
+                            }
+                        },
+                        padding: 12,
+                        displayColors: false
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: Math.min(...sales) * 0.8,
+                        max: Math.max(...sales) * 1.1,
+                        title: {
+                            display: true,
+                            text: '销售额 (元)',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('zh-CN');
+                            },
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: '月份',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        ticks: {
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'nearest'
+                },
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            }
+        });
+
+        // 响应式调整
+        window.addEventListener('resize', function() {
+            salesChart.resize();
+        });
+    </script>
+</body>
+</html>

@@ -72,12 +72,13 @@ const handleLogin = async () => {
   
   await loginFormRef.value.validate(async (valid) => {
     if (valid) {
-      try {        const response = await axios.post('http://localhost:8080/api/login', {
+      try {
+        const response = await axios.post('http://localhost/api/admin/login', {
           username: loginForm.username,
           password: loginForm.password
         })
         
-        if (response.data.code === 0) {
+        if (response.data.code == 1) {
           ElMessage.success('登录成功')
           localStorage.setItem('token', response.data.data.token)
           router.push('/dashboard')
@@ -106,7 +107,7 @@ const refreshCaptcha = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #efefef;
+  background-color: #f7f8fa;
 }
 
 .login-box {

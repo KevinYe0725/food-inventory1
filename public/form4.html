@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+    </div>
+
+    <script>
+        
+        const monthDataList = [
+            { month: '1月', totalSales: 12000 }, // 去年1月
+            { month: '2月', totalSales: 0 },     // 去年2月
+            { month: '3月', totalSales: 18000 }, // ...
+            { month: '4月', totalSales: 16000 },
+            { month: '5月', totalSales: 20000 },
+            { month: '6月', totalSales: 22000 },
+            { month: '7月', totalSales: 25000 },
+            { month: '8月', totalSales: 23000 },
+            { month: '9月', totalSales: 21000 },
+            { month: '10月', totalSales: 24000 },
+            { month: '11月', totalSales: 26000 },
+            { month: '12月', totalSales: 30000 }, // 去年12月
+            
+            { month: '1月', totalSales: 13000 },  // 今年1月
+            { month: '2月', totalSales: 16000 },  // 今年2月
+            { month: '3月', totalSales: 19000 }, // ...
+            { month: '4月', totalSales: 17000 },
+            { month: '5月', totalSales: 21000 },
+            { month: '6月', totalSales: 23000 },
+            { month: '7月', totalSales: 26000 },
+            { month: '8月', totalSales: 24000 },
+            { month: '9月', totalSales: 22000 },
+            { month: '10月', totalSales: 25000 },
+            { month: '11月', totalSales: 27000 },
+            { month: '12月', totalSales: 31000 }  // 今年12月
+        ];
+
+        // 准备数据
+        const last12Months = monthDataList.slice(12).map(item => item.month); // 使用今年的月份作为标签
+        const lastYearSales = monthDataList.slice(0, 12).map(item => item.totalSales);
+        const thisYearSales = monthDataList.slice(12).map(item => item.totalSales);
+
+        // 创建图表
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: last12Months,
+                datasets: [
+                    {
+                        label: '去年销售额',
+                        data: lastYearSales,
+                        type: 'line',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.1,
+                        fill: false
+                    },
+                    {
+                        label: '今年销售额',
+                        data: thisYearSales,
+                        type: 'line',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.1,
+                        fill: false
+                    },
+                    {
+                        label: '今年销售额',
+                        data: thisYearSales,
+                        backgroundColor: 'rgba(65, 105, 225, 0.8)', // 深蓝色
+                        borderColor: 'rgba(65, 105, 225, 1)',      // 深蓝色边框
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '月销售额同比比对图',
+                        font: {
+                            size: 18
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + '元';
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '月份'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '销售额(元)'
+                        },
+                        beginAtZero: true
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+    </script>
+</body>
+</html>

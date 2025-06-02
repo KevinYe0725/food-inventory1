@@ -69,14 +69,15 @@
     <el-dialog
       v-model="showImportDialog"
       title="导入商家"
-      width="800px"
+
+      
     >
     </el-dialog>
     <!-- 设置商家弹窗 -->
     <el-dialog
       v-model="showSettingsDialog"
       title="设置商家"
-      width="800px"
+      
     >
       <el-form :model="currentMarket" label-width="120px">
         <el-form-item label="商家名称">
@@ -104,13 +105,15 @@
           
       </div>
       </el-form>
-    </el-dialog>
-    <!-- 批量导入弹窗 -->
+    </el-dialog>    <!-- 批量导入弹窗 -->
     <el-dialog
       v-model="batchImportVisible"
       title="选择导入类型"
-      width="800px"
-      custom-class="batch-import-dialog"
+      width="500px"
+      center
+      destroy-on-close
+      :close-on-click-modal="false"
+      class="dialog-import"
     >
       <div class="import-options">
         <el-radio-group v-model="importType">
@@ -149,13 +152,12 @@
           <li>批量导入支持Excel文件上传</li>
         </ul>
       </div>
-    </el-dialog>
-
-    <!-- 商家详情弹窗 -->
+    </el-dialog>    <!-- 商家详情弹窗 -->
     <el-dialog
       v-model="detailVisible"
       :title="currentMarket?.marketName"
-      width="60%"
+      :custom-class="'detail-dialog'"
+      :close-on-click-modal="false"
       @close="currentMarket = null"
     >
       <market-card 
@@ -397,9 +399,9 @@ fetchMarkets()
 <style scoped>
 .markets {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #f7f8fa;
   max-width: 100vw;
-  background-color: #f5f5f5;
+  background-color: #f7f8fa;
 }
 
 .header {
@@ -493,6 +495,9 @@ fetchMarkets()
 
 .import-options {
   margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background: #f8f9fa;
 }
 
 .upload-area {
@@ -535,56 +540,133 @@ fetchMarkets()
 }
 
 .el-dialog {
-  border-radius: 8px;
+  border-radius: 120px !important;
+  width: 500px !important;
+  height: 500px !important;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin-top: 15vh;
+  overflow: hidden;
 }
-.delete-btn{
-  background-color: white;
-  border: 1px solid #E5E5E5;
-  border-radius: 100px;
-  color: black;
+
+/* 对话框标题 */
+.el-dialog__header {
+  padding: 20px 30px;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+  border-radius: 120px 120px 0 0;
 }
-.delete-btn:hover{
-  background-color: #F5F7FA;
+
+/* 对话框内容 */
+.el-dialog__body {
+  padding: 30px;
+  color: #333;
+  height: 300px;
+  overflow-y: auto;
 }
-.help-btn{
-  position: relative;
-  right: 10px;
-  background-color: white;
-  border: 1px solid #E5E5E5;
-  border-radius: 100px;
-  color: black;
- 
+
+/* 对话框底部按钮区 */
+.el-dialog__footer {
+  padding: 20px 30px;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f0;
 }
-.help-btn:hover{
-  background-color: #F5F7FA;
+
+/* 关闭按钮 */
+.el-dialog__headerbtn {
+  top: 20px;
+  right: 20px;
 }
-.avatar{
-  position: relative;
-  right: 10px;
+
+.el-dialog__headerbtn .el-dialog__close {
+  color: #909399;
+  font-size: 20px;
+  transition: color 0.3s;
 }
-.import-btn{
-  position: absolute;
-  right: 10px;
-  background-color: white;
-  border: 1px solid #E5E5E5;
-  border-radius: 100px;
-  color: rgb(78, 73, 73);
+
+.el-dialog__headerbtn:hover .el-dialog__close {
+  color: #409EFF;
+}
+
+.import-dialog {
+  width: 500px;
+  height: 500px;
+  border-radius: 500px;
+}
+
+/* 弹窗动画 */
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+:deep(.batch-import-dialog) {    width: 500px !important;
+    height: 500px !important;
+    margin-top: 15vh !important;
+    border-radius: 120px !important;
   
+  .el-dialog__header {
+    padding: 20px 30px !important;
+    background: #fafafa !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    border-radius: 120px 120px 0 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .el-dialog__body {
+    height: 300px !important;
+    padding: 30px !important;
+    overflow-y: auto !important;
+  }
+
+  .el-dialog__footer {
+    padding: 20px 30px !important;
+    background: #fafafa !important;
+    border-top: 1px solid #f0f0f0 !important;
+  }
 }
-.search-bar-left{
-  position: relative;
-  left: 30px;
-}
-.batch-import-dialog.el-dialog{
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-}
-.batch-import-dialog .el-dialog__body {
-  min-height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+.dialog-import {  :deep(.el-dialog) {
+    border-radius: 120px;
+    overflow: hidden;
+    margin-top: 15vh;
+    height: 500px;
+  }
+
+  :deep(.el-dialog__header) {
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f7fa;
+    border-bottom: 1px solid #dcdfe6;
+  }
+
+  :deep(.el-dialog__headerbtn) {
+    top: 20px;
+    right: 20px;
+  }
+
+  :deep(.el-dialog__title) {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  :deep(.el-dialog__body) {
+    padding: 30px;
+    height: calc(500px - 130px);
+    overflow-y: auto;
+  }
+
+  :deep(.el-dialog__footer) {
+    padding: 15px 20px;
+    background-color: #f5f7fa;
+    border-top: 1px solid #dcdfe6;
+  }
 }
 </style>

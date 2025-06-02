@@ -60,10 +60,11 @@ button:focus-visible {
 }
 
 #app {
+  width: 100%;
   margin: 0 ;
   padding: 0 ;
   text-align: center;
-  background-color: #F7F8FA;
+  background-color: #ffffff;
 }
 
 @media (prefers-color-scheme: light) {

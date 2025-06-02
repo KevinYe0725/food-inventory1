@@ -13,8 +13,8 @@
 
     <div class="category-content">
       <el-table :data="categoryList" style="width: 100%">
-        <el-table-column prop="goodId" label="ID" width="80" />
-        <el-table-column label="商品图片" width="120">
+        <el-table-column prop="goodId" label="ID" min-width="15%" />
+        <el-table-column label="商品图片" min-width="20%">
           <template #default="{ row }">
             <el-image 
               :src="row.image" 
@@ -27,10 +27,10 @@
             </el-image>
           </template>
         </el-table-column>
-        <el-table-column prop="goodName" label="品类名称" width="150" />
-        <el-table-column prop="totalNumber" label="总数量" width="100" />
-        <el-table-column prop="totalMarket" label="门店数" width="100" />
-        <el-table-column label="操作" fixed="right" width="100">
+        <el-table-column prop="goodName" label="品类名称" min-width="20%" />
+        <el-table-column prop="totalNumber" label="总数量" min-width="15%" />
+        <el-table-column prop="totalMarket" label="门店数" min-width="15%" />
+        <el-table-column label="操作" min-width="15%">
           <template #default="{ row }">
             <el-button-group>
               <el-button link type="primary" @click="handleEdit(row)">
@@ -103,37 +103,71 @@
           </div>
         </el-upload>
       </div>
-    </el-dialog>
-
-    <!-- 审核时段设置弹窗 -->
+    </el-dialog>    <!-- 审核时段设置弹窗 -->
     <el-dialog
       v-model="timeDialogVisible"
       title="审核时段"
       width="500px"
     >
-      <el-form :model="timeForm" ref="timeFormRef" label-width="80px">
+      <el-form :model="timeForm" ref="timeFormRef" label-width="80px">        
         <div class="time-section">
           <div class="time-label">中午:</div>
           <div class="time-inputs">
-            <el-input v-model="timeForm.startNoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.startNoonTime"
+              placeholder="开始时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
             <span class="time-separator">-</span>
-            <el-input v-model="timeForm.endNoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.endNoonTime"
+              placeholder="结束时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
           </div>
         </div>
         <div class="time-section">
           <div class="time-label">下午:</div>
           <div class="time-inputs">
-            <el-input v-model="timeForm.startAfternoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.startAfternoonTime"
+              placeholder="开始时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
             <span class="time-separator">-</span>
-            <el-input v-model="timeForm.endAfternoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.endAfternoonTime"
+              placeholder="结束时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
           </div>
         </div>
         <div class="time-section">
           <div class="time-label">晚上:</div>
           <div class="time-inputs">
-            <el-input v-model="timeForm.startNightTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.startNightTime"
+              placeholder="开始时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
             <span class="time-separator">-</span>
-            <el-input v-model="timeForm.endNightTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.endNightTime"
+              placeholder="结束时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
           </div>
         </div>
       </el-form>
@@ -363,9 +397,9 @@ loadCategoryList()
 <style scoped>
 .category-manage {
   width: 100%;
-  padding: 20px;
+  padding: 0px;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #f7f8fa;
 }
 
 .page-header {
@@ -375,7 +409,7 @@ loadCategoryList()
   align-items: center;
   background: white;
   padding: 16px 24px;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -470,24 +504,38 @@ loadCategoryList()
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  padding: 0 20px;
 }
 
 .time-label {
   width: 60px;
   text-align: right;
-  margin-right: 20px;
+  margin-right: 15px;
   color: #606266;
+  flex-shrink: 0;
 }
 
 .time-inputs {
+  width: 40px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
 }
 
 .time-separator {
   color: #909399;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.time-inputs :deep(.el-time-picker) {
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.time-inputs :deep(.el-input__wrapper) {
+  padding: 0 8px;
 }
 
 /* 设置时段按钮 */

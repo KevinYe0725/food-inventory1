@@ -1,7 +1,7 @@
 <template>  <div class="staff-manage">
     <div class="page-header">
       <div class="header-left">
-        <img src="/square-logo.png" alt="公司logo" class="company-logo">
+        <img src="/square-conf.png" alt="公司logo" class="company-logo">
         <h2>人员管理</h2>
       </div>
       <div class="header-right">
@@ -106,29 +106,64 @@
       title="审核时段"
       width="500px"
     >
-      <el-form :model="timeForm" ref="timeFormRef" label-width="80px">
-        <div class="time-section">
+      <el-form :model="timeForm" ref="timeFormRef" label-width="80px">        <div class="time-section">
           <div class="time-label">中午:</div>
           <div class="time-inputs">
-            <el-input v-model="timeForm.startNoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.startNoonTime"
+              placeholder="开始时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
             <span class="time-separator">-</span>
-            <el-input v-model="timeForm.endNoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.endNoonTime"
+              placeholder="结束时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
           </div>
         </div>
         <div class="time-section">
           <div class="time-label">下午:</div>
           <div class="time-inputs">
-            <el-input v-model="timeForm.startAfternoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.startAfternoonTime"
+              placeholder="开始时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
             <span class="time-separator">-</span>
-            <el-input v-model="timeForm.endAfternoonTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.endAfternoonTime"
+              placeholder="结束时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
           </div>
         </div>
         <div class="time-section">
           <div class="time-label">晚上:</div>
           <div class="time-inputs">
-            <el-input v-model="timeForm.startNightTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.startNightTime"
+              placeholder="开始时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
             <span class="time-separator">-</span>
-            <el-input v-model="timeForm.endNightTime" placeholder="HH:mm" />
+            <el-time-picker
+              v-model="timeForm.endNightTime"
+              placeholder="结束时间"
+              format="HH:mm"
+              value-format="HH:mm"
+              :clearable="false"
+            />
           </div>
         </div>
       </el-form>
@@ -335,9 +370,9 @@ loadStaffList()
 
 <style scoped>
 .staff-manage {
-  padding: 20px;
+  padding: 0px;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #f7f8fa;
 }
 
 .page-header {
@@ -347,7 +382,7 @@ loadStaffList()
   align-items: center;
   background: white;
   padding: 16px 24px;
-  border-radius: 8px;
+  border-radius: 0px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
@@ -358,7 +393,10 @@ loadStaffList()
 }
 
 .company-logo {
-  height: 40px;
+  position: relative;
+
+  top: 4px;
+  height: 35px;
 }
 
 .header-left h2 {
@@ -419,24 +457,38 @@ loadStaffList()
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  padding: 0 20px;
 }
 
 .time-label {
   width: 60px;
   text-align: right;
-  margin-right: 20px;
+  margin-right: 15px;
   color: #606266;
+  flex-shrink: 0;
 }
 
 .time-inputs {
+  width:40px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
 }
 
 .time-separator {
   color: #909399;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.time-inputs :deep(.el-time-picker) {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.time-inputs :deep(.el-input__wrapper) {
+  padding: 0 8px;
 }
 
 /* 设置时段按钮 */
